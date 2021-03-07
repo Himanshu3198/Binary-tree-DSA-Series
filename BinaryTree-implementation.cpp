@@ -70,4 +70,11 @@ int main()
 
     postOrder(root);
     cout<<"\n";
+    
+    return 0;
 }
+
+// expected output :
+// 1 2 4 3
+// 4 2 1 3
+// 4 2 3 1
