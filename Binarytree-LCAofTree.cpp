@@ -134,42 +134,22 @@ struct Node
 /* If n1 and n2 are present, return pointer
    to LCA. If both are not present, return 
    NULL. Else if left subtree contains any 
-   
-   
    of them return pointer to left.*/
-   bool findpath(Node *root,vector<Node*>&v1,int x){
-       if(!root){
-           return false;
-       }
-      v1.push_back(root);
-      if(root->data==x){
-          return true;
-      }
-      
-      if(root->left && findpath(root->left,v1,x) || root->right && findpath(root->right,v1,x)){
-          return true;
-      }
-      
-      
-      v1.pop_back();
-      return false;
-   }
 
 Node* lca(Node* root ,int n1 ,int n2 )
 {
    //Your code here 
+   if(root==NULL)
+   return NULL;
+   if(root->data==n1||root->data==n2)
+   return root;
+   Node *lca1=lca(root->left,n1,n2);
+   Node *lca2=lca(root->right,n1,n2);
+   if(lca1!=NULL&&lca2!=NULL)
+   return root;
+   if(lca1!=NULL)
+   return lca1;
+   else
+   return lca2;
    
-   vector<Node*>path1,path2;
-//   findpath(root,path1,n1);    findpath(root,path2,n2);
-
-    
-    if ( !findpath(root, path1, n1) || !findpath(root, path2, n2))
-          return 0;
-    int i;
-   for(i=0; i<path1.size() && path2.size();i++){
-       if(path1[i]!=path2[i]){
-           break;
-       }
-   }
-   return path1[i-1];
 }
