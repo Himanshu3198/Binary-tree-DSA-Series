@@ -1,3 +1,5 @@
+// 105. Construct Binary Tree from Preorder and Inorder Traversal
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -12,35 +14,40 @@
 class Solution {
 public:
     
-    int j=0;
+     int idx;
+    unordered_map<int,int>mp;
     
     
     TreeNode *solver(vector<int>&pre,vector<int>&in,int start,int end){
+ 
+           
+             if(start>end or idx<0) return NULL;
         
-        if(start>end){
-            return NULL;
-            
-        }
         
-        TreeNode *root=new TreeNode(pre[j],NULL,NULL);
-        int indexOfinorder=-1;
+          int val=pre[idx++];
+         
+        TreeNode *curr=new TreeNode(val);
+        int pos=mp[val];
         
-        for(int i=start;i<=end;i++){
-            
-            if(in[i]==pre[j]){
-                indexOfinorder=i;
-                break;
-            }
-        }
+        curr->left=solver(pre,in,start,pos-1);
+        curr->right=solver(pre,in,pos+1,end);
         
-        j++;
-        root->left=solver(pre,in,start,indexOfinorder-1);
-        root->right=solver(pre,in,indexOfinorder+1,end);
+        return curr;
         
-        return root;
+        
+        
+        
+        
     }
     TreeNode* buildTree(vector<int>& pre, vector<int>& in) {
         
+        
+        idx=0;
+        
+        for(int i=0;i<in.size();i++){
+            
+            mp[in[i]]=i;
+        }
         return solver(pre,in,0,pre.size()-1);
         
     }
