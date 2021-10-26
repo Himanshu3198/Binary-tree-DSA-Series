@@ -1,4 +1,3 @@
-226. Invert Binary Tree
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -23,17 +22,18 @@ public:
            postorder(root->left);
            postorder(root->right);
            
+           TreeNode *left=root->left;
            
-           TreeNode *temp=root->left;
+           TreeNode* right=root->right;
            
-           root->left=root->right;
-           
-           root->right=temp;
+           root->left=right;
+           root->right=left;
+         
        }
     TreeNode* invertTree(TreeNode* root) {
      
         
-        postorder(root);
+       postorder(root);
         
         return root;
     }
