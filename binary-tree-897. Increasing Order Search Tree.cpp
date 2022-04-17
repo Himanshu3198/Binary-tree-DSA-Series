@@ -1,5 +1,3 @@
-// 897. Increasing Order Search Tree
-
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -13,43 +11,26 @@
  */
 class Solution {
 public:
-    
-      set<int>st;
-    
-    
-       void solve(TreeNode* root){
-           
-           if(!root){
-               return;
-           }
-           
-           solve(root->left);
-           st.insert(root->val);
-           solve(root->right);
-       }
+    TreeNode *prev,*curr;
+      void solve(TreeNode *root){
+        if(!root) return;
+        solve(root->left);
+        if(prev){
+            prev->right=root;
+        }else{
+            curr=root;
+        }
+        root->left=NULL;  
+        prev=root;
+        solve(root->right);
+        
+    }
     TreeNode* increasingBST(TreeNode* root) {
         
-        
+        prev=NULL,curr=NULL;
         solve(root);
+        return curr;
         
-        
-        TreeNode *head=NULL ,*newRoot;
-        
-        for(auto it:st){
-            
-            if(head==NULL){
-                head=new TreeNode(it);
-                newRoot=head;
-            }
-            else{
-             newRoot->right=new TreeNode(it);
-                newRoot=newRoot->right;
-            }
-        }
-        
-        newRoot->right=NULL;
-        
-        return head;
         
     }
 };
