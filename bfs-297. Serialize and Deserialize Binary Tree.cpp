@@ -87,3 +87,81 @@ public:
 // Your Codec object will be instantiated and called as such:
 // Codec ser, deser;
 // TreeNode* ans = deser.deserialize(ser.serialize(root));
+
+// java version
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while(!q.isEmpty()){
+
+            TreeNode curr = q.poll();
+            if(curr == null){
+                sb.append("#");
+            }else{
+                String val = String.valueOf(curr.val);
+                sb.append(val);
+            }
+            sb.append(",");
+
+            if(curr != null){
+                q.offer(curr.left);
+                q.offer(curr.right);
+            }
+        }
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+
+        String[] arr = data.split(",");
+        Queue<TreeNode> q = new LinkedList<>();
+        TreeNode root = null;
+        int idx = 0;
+        if(!arr[idx].equals("#")){
+            TreeNode newNode = new  TreeNode(Integer.parseInt(arr[idx++]));
+            q.offer(newNode);
+            root = newNode;
+        }
+        while(!q.isEmpty() && idx <arr.length){
+            
+            TreeNode curr = q.poll();
+            if(!arr[idx].equals("#")){
+                curr.left = new TreeNode(Integer.parseInt(arr[idx]));
+                q.offer(curr.left);
+            }
+            idx++;
+
+            if(idx < arr.length && !arr[idx].equals("#")){
+                curr.right = new TreeNode(Integer.parseInt(arr[idx]));
+                q.offer(curr.right);
+            }
+            idx++;
+        }
+
+        return root;
+
+       
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));
