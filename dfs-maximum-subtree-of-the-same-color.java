@@ -40,3 +40,46 @@ class Solution {
 
     }
 }
+
+// python version
+
+from collections import defaultdict
+from typing import List
+class Solution:
+    def dfs(self,graph:defaultdict(list),colors: List[int],node:int)->int:
+
+        same = True
+        size = 1
+        childs = graph[node]
+        color = colors[node]
+
+        for child in childs:
+
+            child_size = self.dfs(graph,colors,child)
+
+            if color != colors[child] or child_size == 0 :
+                same = False
+            else:
+                size +=  child_size
+        
+        if same == False:
+            return 0
+        self.max_size = max(self.max_size,size)
+        return size
+        
+
+
+    def maximumSubtreeSize(self, edges: List[List[int]], colors: List[int]) -> int:
+
+        graph = defaultdict(list)
+        for u,v in edges:
+            graph[u].append(v)
+        
+        self.max_size = 0
+        self.dfs(graph,colors,0)
+
+        return self.max_size
+
+
+        
+        
